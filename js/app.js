@@ -16,7 +16,7 @@ class WeatherApp {
         this.autocompleteResults = document.getElementById('autocomplete-results');
         this.searchCloseBtn = document.getElementById('search-close');
         this.apiKey = CONFIG.OPENCAGE_API_KEY;
-        
+
         // Create and append search loading indicator
         this.searchLoading = document.createElement('div');
         this.searchLoading.className = 'search-loading';
@@ -24,7 +24,7 @@ class WeatherApp {
         if (searchInputWrapper) {
             searchInputWrapper.appendChild(this.searchLoading);
         }
-        
+
         this.debounceTimer = null;
         this.currentLocation = null;
         this.init();
@@ -46,7 +46,7 @@ class WeatherApp {
             this.weatherInfo.textContent = 'Error: API key not configured';
             return;
         }
-        
+
         this.setupEventListeners();
         await this.getCurrentLocation();
     }
@@ -54,8 +54,8 @@ class WeatherApp {
     setupEventListeners() {
         // Close search when clicking outside
         document.addEventListener('click', (e) => {
-            if (this.searchContainer && 
-                !this.searchContainer.contains(e.target) && 
+            if (this.searchContainer &&
+                !this.searchContainer.contains(e.target) &&
                 !e.target.closest('#location-button')) {
                 this.closeSearch();
             }
@@ -118,7 +118,7 @@ class WeatherApp {
 
     displayAutocompleteResults(results) {
         this.autocompleteResults.innerHTML = '';
-        
+
         if (!results.length) {
             const li = document.createElement('li');
             li.className = 'autocomplete-item';
@@ -141,17 +141,17 @@ class WeatherApp {
     async searchCity(cityName, geometry = null) {
         try {
             this.showLoading('Searching for city...');
-            
+
             if (!geometry) {
                 const response = await fetch(
                     `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(cityName)}&key=${this.apiKey}&limit=1`
                 );
                 const data = await response.json();
-                
+
                 if (!data.results.length) {
                     throw new Error('City not found');
                 }
-                
+
                 geometry = data.results[0].geometry;
             }
 
@@ -170,7 +170,7 @@ class WeatherApp {
             const position = await new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(resolve, reject);
             });
-            
+
             const { latitude, longitude } = position.coords;
             await this.getWeatherData(latitude, longitude);
         } catch (error) {
@@ -187,11 +187,11 @@ class WeatherApp {
                 `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${this.apiKey}`
             );
             const geoData = await geoResponse.json();
-            const cityName = geoData.results[0]?.components.city || 
-                           geoData.results[0]?.components.town ||
-                           geoData.results[0]?.components.village ||
-                           'Unknown location';
-            
+            const cityName = geoData.results[0]?.components.city ||
+                geoData.results[0]?.components.town ||
+                geoData.results[0]?.components.village ||
+                'Unknown location';
+
             this.currentLocation = cityName;
 
             this.showLoading('Fetching weather forecast...');
@@ -203,9 +203,9 @@ class WeatherApp {
                 `&timezone=auto`
             );
             const weatherData = await weatherResponse.json();
-            
+
             console.log('Weather Data:', weatherData);
-            
+
             const nextSunnyDay = this.findNextSunnyDay(
                 weatherData.daily.time,
                 weatherData.daily.weathercode
@@ -213,7 +213,7 @@ class WeatherApp {
 
             this.hideLoading();
             this.updateWeatherDisplay(cityName, nextSunnyDay ? new Date(nextSunnyDay) : null);
-            
+
         } catch (error) {
             console.error('Error:', error);
             this.hideLoading();
@@ -227,14 +227,14 @@ class WeatherApp {
         weatherCodes.forEach((code, index) => {
             console.log(`Day ${index + 1}: Code ${code}`);
         });
-        
+
         // Expanded weather codes for "sunny" conditions:
         // 0 = Clear sky
         // 1 = Mainly clear
         // 2 = Partly cloudy
         // 3 = Overcast (debatable, but might still have decent sun)
         const sunnyWeatherCodes = [0, 1, 2];
-        
+
         for (let i = 0; i < dates.length; i++) {
             if (sunnyWeatherCodes.includes(weatherCodes[i])) {
                 console.log(`Found sunny day with code ${weatherCodes[i]} on ${dates[i]}`);
@@ -243,23 +243,34 @@ class WeatherApp {
         }
         return null;
     }
-
+    changeThemeColor(color) {
+        let themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeColorMeta) {
+            themeColorMeta.setAttribute("content", color);
+        } else {
+            themeColorMeta = document.createElement("meta");
+            themeColorMeta.setAttribute("name", "theme-color");
+            themeColorMeta.setAttribute("content", color);
+            document.head.appendChild(themeColorMeta);
+        }
+    }
     updateWeatherDisplay(cityName, date) {
         const locationButton = `<span class="location-button" id="location-button">${cityName}</span>`;
-        
         if (date) {
             const formattedDate = date.toLocaleDateString('en-US', {
                 weekday: 'long',
                 month: 'long',
                 day: 'numeric'
             });
-            this.weatherInfo.innerHTML = 
+            this.weatherInfo.innerHTML =
                 `The next sunny day in ${locationButton}is on ${formattedDate}`;
             document.body.className = 'sunny';
+            changeThemeColor("#FFB200");
         } else {
-            this.weatherInfo.innerHTML = 
+            this.weatherInfo.innerHTML =
                 `No sunny days forecast in ${locationButton} for the next 10 days`;
             document.body.className = 'no-sun';
+            changeThemeColor("#FF4B4B");
         }
 
         // Add click handler to the location button
