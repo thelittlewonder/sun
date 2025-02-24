@@ -2,7 +2,7 @@
     "name": "Next Sunny Day",
     "short_name": "Sunny Day",
     "description": "Find the next sunny day in your location",
-    "start_url": ".",
+    "start_url": "./",
     "display": "standalone",
     "background_color": "#4096FB",
     "theme_color": "#4096FB",
