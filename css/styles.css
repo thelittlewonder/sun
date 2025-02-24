@@ -1,0 +1,226 @@
+:root {
+    --gradient-start: #4096FB;
+    --gradient-end: #3178F9;
+    --sunny-gradient-start: #FFB200;
+    --sunny-gradient-end: #FF8A00;
+    --rainy-gradient-start: #FF4B4B;
+    --rainy-gradient-end: #FF1F1F;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --text: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --border: rgba(255, 255, 255, 0.15);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.5s ease;
+}
+
+body.sunny {
+    background: linear-gradient(135deg, var(--sunny-gradient-start), var(--sunny-gradient-end));
+}
+
+body.no-sun {
+    background: linear-gradient(135deg, var(--rainy-gradient-start), var(--rainy-gradient-end));
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+    margin: 20px;
+    position: relative;
+}
+
+.content-container {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 32px 24px;
+}
+
+.weather-info {
+    font-size: 28px;
+    text-align: center;
+    padding: 20px 0;
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+}
+
+.location-button {
+    display: inline-flex;
+    align-items: center;
+    color: var(--text);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.location-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.search-container {
+    display: none;
+    margin-top: 16px;
+}
+
+.search-container.active {
+    display: block;
+}
+
+.search-input-wrapper {
+    position: relative;
+}
+
+.city-search-input {
+    width: 100%;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    font-size: 17px;
+    color: var(--text);
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.city-search-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.city-search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.autocomplete-results {
+    margin-top: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+}
+
+.autocomplete-item {
+    padding: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    color: var(--text);
+    font-size: 17px;
+}
+
+.autocomplete-item:not(:last-child) {
+    border-bottom: 1px solid var(--border);
+}
+
+.autocomplete-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.loading-container {
+    text-align: center;
+    padding: 20px;
+    display: none;
+}
+
+.loading-container.active {
+    display: block;
+}
+
+.loader {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    margin: 20px 0;
+}
+
+.loader::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 30%;
+    background: var(--text);
+    border-radius: 2px;
+    animation: progress 1s ease-in-out infinite;
+}
+
+@keyframes progress {
+    0% {
+        left: -30%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+#loading-text {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+@keyframes search-spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Dark mode optimization */
+@media (prefers-color-scheme: light) {
+    :root {
+        --background: #F2F2F7;
+        --card-bg: rgba(255, 255, 255, 0.8);
+        --text: #000000;
+        --text-secondary: rgba(0, 0, 0, 0.6);
+        --border: rgba(0, 0, 0, 0.1);
+        --search-bg: rgba(0, 0, 0, 0.05);
+    }
+}
+
+.search-close-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+}
+
+.search-close-btn:hover {
+    opacity: 1;
+}
+
+.search-close-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+} 

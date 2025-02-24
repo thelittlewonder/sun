@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Sunny Day</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <meta name="theme-color" content="#1B1D1F">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+</head>
+<body>
+    <div class="container">
+        <div class="content-container">
+            <div id="weather-info" class="weather-info">Finding sun...</div>
+            <div id="search-container" class="search-container">
+                <div class="search-input-wrapper">
+                    <input type="text" id="city-search" placeholder="Search for a city" class="city-search-input">
+                    <div class="search-loading"></div>
+                    <button id="search-close" class="search-close-btn">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                </div>
+                <ul id="autocomplete-results" class="autocomplete-results"></ul>
+            </div>
+        </div>
+        <div class="loading-container">
+            <p id="loading-text">Loading</p>
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="kawaii-background"></div>
+    <script src="/js/config.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html> 
