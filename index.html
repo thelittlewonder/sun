@@ -9,9 +9,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    <meta name="theme-color" content="#1B1D1F">
+    <meta name="theme-color" content="#4096FB">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icons/favicon.png">
+    
+    <!-- iOS specific -->
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Next Sunny Day">
+    
+    <!-- PWA splash screens for iOS -->
+    <link rel="apple-touch-startup-image" href="icons/icon-512x512.png">
 </head>
 <body>
     <div class="container">
@@ -38,5 +48,19 @@
     <div class="kawaii-background"></div>
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('js/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
 </body>
 </html> 
