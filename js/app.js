@@ -5,6 +5,18 @@ if ('serviceWorker' in navigator) {
         .catch(err => console.log('ServiceWorker registration failed: ', err));
 }
 
+function changeThemeColor(color) {
+    let themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeColorMeta) {
+        themeColorMeta.setAttribute("content", color);
+    } else {
+        themeColorMeta = document.createElement("meta");
+        themeColorMeta.setAttribute("name", "theme-color");
+        themeColorMeta.setAttribute("content", color);
+        document.head.appendChild(themeColorMeta);
+    }
+}
+
 class WeatherApp {
     constructor() {
         this.weatherInfo = document.getElementById('weather-info');
@@ -242,17 +254,6 @@ class WeatherApp {
             }
         }
         return null;
-    }
-    changeThemeColor(color) {
-        let themeColorMeta = document.querySelector('meta[name="theme-color"]');
-        if (themeColorMeta) {
-            themeColorMeta.setAttribute("content", color);
-        } else {
-            themeColorMeta = document.createElement("meta");
-            themeColorMeta.setAttribute("name", "theme-color");
-            themeColorMeta.setAttribute("content", color);
-            document.head.appendChild(themeColorMeta);
-        }
     }
     updateWeatherDisplay(cityName, date) {
         const locationButton = `<span class="location-button" id="location-button">${cityName}</span>`;
