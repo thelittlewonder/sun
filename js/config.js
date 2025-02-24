@@ -1,0 +1,3 @@
+const CONFIG = {
+    OPENCAGE_API_KEY: 'c972e8fbcd4a4b7b9aa8a94398942e78'
+}; 
